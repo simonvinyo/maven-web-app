@@ -34,15 +34,15 @@ pipeline{
   }
   stage('Predeployment'){
    steps{
-    sh "docker build -t devopstestimage/mavenproject ."
+    sh "docker build -t devopstestimage/Fist-Pipeline ."
     sh "docker login -u devopstestimage -p florence1"
-    sh "docker push devopstestimage/mavenproject"
+    sh "docker push devopstestimage/Fist-Pipeline"
    }
   }
   stage('Deployment'){
    steps{
     sh "echo ready for Predeployment"
-    sh "docker run --name mavenproject -d -p 8000:8080 devopstestimage/mavenproject"
+    sh "docker run --name Fist-Pipeline -d -p 8000:8080 devopstestimage/Fist-Pipeline"
    }
   }
   stage('message'){
