@@ -9,7 +9,7 @@ pipeline{
   stage('git clone'){
    steps{
     sh "echo cloning the latest application version"
-    git "https://github.com/flonellya/maven-web-app.git"
+    git "https://github.com/simonvinyo/maven-web-app.git"
    } 
   } 
   stage('Build Job'){
@@ -34,15 +34,15 @@ pipeline{
   }
   stage('Predeployment'){
    steps{
-    sh "docker build -t devopstestimage/Fist-Pipeline ."
-    sh "docker login -u devopstestimage -p florence1"
-    sh "docker push devopstestimage/Fist-Pipeline"
+    sh "docker build -t vinyo/Fist-Pipeline ."
+    sh "docker login -u vinyo -p kabongo0404@"
+    sh "docker push vinyo/Fist-Pipeline"
    }
   }
   stage('Deployment'){
    steps{
     sh "echo ready for Predeployment"
-    sh "docker run --name Fist-Pipeline -d -p 8000:8080 devopstestimage/Fist-Pipeline"
+    sh "docker run --name Fist-Pipeline -d -p 8000:8080 vinyo/Fist-Pipeline"
    }
   }
   stage('message'){
