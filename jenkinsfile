@@ -1,0 +1,56 @@
+//Declarative
+
+pipeline{
+    agent any
+    tools{
+        maven "maven3.8.4"
+    }
+	stages{
+		stage('git clone'){
+			steps{
+				sh "echo cloning the latest application version"
+				git "https://github.com/flonellya/maven-web-app.git"
+			}	
+		}	
+		stage('Build Job'){
+			steps{
+				sh "echo run unitesting"
+				sh "echo unittest ok"
+				sh "mvn clean package"
+				sh "echo artifacts created"
+			}
+		}
+		stage('Code Quality'){
+			steps{
+				sh "echo running codequality report"
+				sh "mvn sonar:sonar"
+			}
+		}
+		stage('Upload Artifact'){
+			steps{
+				sh "echo upload artifacts into Nexus"
+				sh "mvn deploy"
+			}
+		}
+		stage('Predeployment'){
+			steps{
+				sh "docker build -t devopstestimage/mavenproject ."
+				sh "docker login -u devopstestimage -p florence1"
+				sh "docker push devopstestimage/mavenproject"
+			}
+		}
+		stage('Deployment'){
+			steps{
+				sh "echo ready for Predeployment"
+				sh "docker run --name mavenproject -d -p 8000:8080 devopstestimage/mavenproject"
+			}
+		}
+		stage('message'){
+			steps{
+				sh "echo ci job completed"
+			}
+		}
+
+	}
+}
+
